@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
 public class CensusAnalyserTest {
     private String INDIAN_CENSUS_CSV_FILE_PATH = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
     private String INIDAN_CENSUS_WrongCSV_FILE_PATH = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus1.csv";
-    private String INDIAN_CENSUS_INCORRECT_FILE_FORMAT  = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus1.txt";
+    private String INDIAN_CENSUS_INCORRECT_FILE_FORMAT  = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.txt";
+    private String INDIAN_CENSUS_WITHWRONG_DELIMITER ="C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
 
 
     // Tc1.1
@@ -47,6 +48,22 @@ public class CensusAnalyserTest {
             censusAnalyser.loadIndiaCensusData(INDIAN_CENSUS_INCORRECT_FILE_FORMAT);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CENSUS_INCORRECT_FILE_FORMAT, e.type);
+        }
+    }
+
+    // TC1.4
+    @Test
+    public void givenIndianCensusCSVFile_WhenWrongDelimiter_ShouldThrowException() {
+
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            ExpectedException exceptionRule = ExpectedException.none();
+            exceptionRule.expect(CensusAnalyserException.class);
+            censusAnalyser.loadIndiaCensusData(INDIAN_CENSUS_WITHWRONG_DELIMITER);
+        }
+        catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_WRONG_DELIMITER, e.type);
+            e.printStackTrace();
         }
     }
 
