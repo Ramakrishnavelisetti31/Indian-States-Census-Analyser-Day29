@@ -12,12 +12,16 @@ import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            CsvToBean<IndiaCensusCSV>csvToBean = new CsvToBeanBuilder<IndiaCensusCSV>(reader)
+        try {
+            if (csvFilePath.contains("txt")) {
+                throw new CensusAnalyserException("File must be in CSV Format", CensusAnalyserException.ExceptionType.CENSUS_INCORRECT_FILE_FORMAT);
+            }
+            Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+            CsvToBean<IndiaCensusCSV> csvToBean = new CsvToBeanBuilder<IndiaCensusCSV>(reader)
                     .withType(IndiaCensusCSV.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
-            Iterator<IndiaCensusCSV>iterator = csvToBean.iterator();
+            Iterator<IndiaCensusCSV> iterator = csvToBean.iterator();
             // iterator doesn't consume memory
             Iterable<IndiaCensusCSV> csvIterable = () -> iterator;
             int count = (int) StreamSupport.stream(csvIterable.spliterator(), true).count();
