@@ -32,4 +32,17 @@ public class CensusAnalyser {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CENSUS_FILE_INCORRECT);
         }
     }
+
+    public int loadIndianStateCodeData(String csvFilePath) throws IOException {
+        Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+        CsvToBean<IndianStateCodeCSV> csvToBean = new CsvToBeanBuilder<IndianStateCodeCSV>(reader)
+                .withType(IndianStateCodeCSV.class)
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
+        Iterator<IndianStateCodeCSV> iterator = csvToBean.iterator();
+        // iterator doesn't consume memory
+        Iterable<IndianStateCodeCSV> csvIterable = () -> iterator;
+        int count = (int) StreamSupport.stream(csvIterable.spliterator(), true).count();
+        return count;
+    }
 }
