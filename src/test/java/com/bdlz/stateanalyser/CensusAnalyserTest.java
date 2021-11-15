@@ -11,7 +11,9 @@ public class CensusAnalyserTest {
     private String INDIAN_CENSUS_CSV_FILE_PATH = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
     private String INIDAN_CENSUS_WrongCSV_FILE_PATH = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus1.csv";
     private String INDIAN_CENSUS_INCORRECT_FILE_FORMAT  = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.txt";
-    private String INDIAN_CENSUS_WITHWRONG_DELIMITER ="C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
+    private String INDIAN_CENSUS_WITH_WRONG_DELIMITER ="C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
+    private String INDIAN_CENSUS_WITH_WRONG_HEADER = "C:\\Users\\lenovo\\IdeaProjects\\IndianStateAnalyser\\src\\main\\resources\\IndiaStateCensusDataWithWrongHeader.csv";
+
 
 
     // Tc1.1
@@ -59,10 +61,25 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CensusAnalyserException.class);
-            censusAnalyser.loadIndiaCensusData(INDIAN_CENSUS_WITHWRONG_DELIMITER);
+            censusAnalyser.loadIndiaCensusData(INDIAN_CENSUS_WITH_WRONG_DELIMITER);
         }
         catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_WRONG_DELIMITER, e.type);
+            e.printStackTrace();
+        }
+    }
+
+    // TC1.5
+    @Test
+    public void givenIndianCensusCSVFile_WhenWrongHeader_ShouldThrowException() {
+
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            ExpectedException exceptionRule = ExpectedException.none();
+            exceptionRule.expect(CensusAnalyserException.class);
+            censusAnalyser.loadIndiaCensusData(INDIAN_CENSUS_WITH_WRONG_HEADER);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_WRONG_HEADER, e.type);
             e.printStackTrace();
         }
     }

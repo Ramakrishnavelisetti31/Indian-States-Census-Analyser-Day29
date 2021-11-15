@@ -27,7 +27,7 @@ public class CensusAnalyser {
             int count = (int) StreamSupport.stream(csvIterable.spliterator(), true).count();
             return count;
         } catch (RuntimeException e) {
-            throw new CensusAnalyserException("CSV File Must Have Comma As Delimiter", CensusAnalyserException.ExceptionType.CENSUS_WRONG_DELIMITER);
+            throw new CensusAnalyserException("CSV File Must Has Incorrect Header", CensusAnalyserException.ExceptionType.CENSUS_WRONG_HEADER);
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CENSUS_FILE_INCORRECT);
         }
